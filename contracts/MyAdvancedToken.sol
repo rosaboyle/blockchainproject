@@ -79,14 +79,28 @@ contract Task {
     address payable selectedBidder;
     bool finalized; // Bidder selected
     bool accepted;
+    bool escalate;
+    string ipfsname;
     
-    constructor(uint256 _minBid, address payable _creator) public {
+    constructor(uint256 _minBid, address payable _creator, string memory ipfsid) public {
         creator = _creator;
         minBid = _minBid;
         finalized = false;
         accepted = false;
-        
+        ipfsname = ipfsid;   
+        escalate = false;     
     }
+
+    function acceptSolution() public { // Make sure this is only owner
+        accepted = true;
+        escalate = false;
+    }
+    function rejectSolution() public { // Make sure this is only owner
+        accepted = false;
+        escalate = true;
+    }
+
+    // Case escalated= true and accepted=true won't occur.
 }
 
 
@@ -287,6 +301,13 @@ contract TokenERC20 {
         // assert(balanceOf[_from] + balanceOf[_to] == previousBalances);
     }
 
+    function createTaskFunc(uint256 minimumBid, string memory ipfsid) public returns (bool success) {
+        Task task = new Task( minimumBid, msg.sender, ipfsid);
+        tasks.push(task);
+        return true;
+    }
+
+
 
      /* Public transfer of tokens.
         Calls the internal transfer with the message sender as 'from'.
@@ -317,10 +338,10 @@ contract TokenERC20 {
         return true;
     }
 
-    function createTaskFunc(uint256 _value) public returns (bool success) {
-        _createTask(msg.sender, _value);
-        return true;
-    }
+    // function createTaskFunc(uint256 _value) public returns (bool success) {
+    //     _createTask(msg.sender, _value);
+    //     return true;
+    // }
 
 
 
