@@ -209,8 +209,6 @@ contract TokenERC20 {
     event CreateTask(address indexed from, uint256 value);
     event BidTask(address indexed from, uint256 value);
     event AcceptBid(address indexed from, uint256 value);
-
-
     event Approval(address indexed _owner, address indexed _spender, uint256 _value);
 
     // This can be used to notify clients of the amount of tokens burned.
@@ -301,14 +299,47 @@ contract TokenERC20 {
         // assert(balanceOf[_from] + balanceOf[_to] == previousBalances);
     }
 
-    function createTaskFunc(uint256 minimumBid, string memory ipfsid) public returns (bool success) {
+    function createTask(uint256 minimumBid, string memory ipfsid) public returns (bool success) {
         Task task = new Task( minimumBid, msg.sender, ipfsid);
         tasks.push(task);
         return true;
     }
 
+    function Bid(uint256 minimumBid, string memory ipfsid) public returns (bool success) {
+        Task task = new Task( minimumBid, msg.sender, ipfsid);
+        tasks.push(task);
+
+        return true;
+    }
 
 
+    function acceptBid(uint256 minimumBid, string memory ipfsid) public returns (bool success) {
+        // Pending implementation
+        Task task = new Task( minimumBid, msg.sender, ipfsid);
+        tasks.push(task);
+
+        return true;
+    }
+
+
+    function SubmitSolution( string memory ipfsid, address taskID) public returns (bool success) {
+        // Pending
+        address a = taskID;
+        a = a;
+        Task task = new Task( 100, msg.sender, ipfsid);
+        tasks.push(task);
+        return true;
+    }
+
+    function AcceptSolution( address taskID) public returns (bool success) {
+        // Pending
+        address a = taskID;
+        a = a;
+        Task task = new Task( 100, msg.sender, "ipfsID");
+        tasks.push(task);
+
+        return true;
+    }
      /* Public transfer of tokens.
         Calls the internal transfer with the message sender as 'from'.
         The caller transfers its own tokens to the specified address.
