@@ -81,6 +81,9 @@ contract Task {
     bool accepted;
     bool escalate;
     string ipfsname;
+    string Solipfs;
+    uint256 voteinFavorOfDeveloper;
+    bool transfereth;
     
     constructor(uint256 _minBid, address payable _creator, string memory ipfsid) public {
         creator = _creator;
@@ -88,18 +91,66 @@ contract Task {
         finalized = false;
         accepted = false;
         ipfsname = ipfsid;   
-        escalate = false;     
+        escalate = false;  
+        voteinFavorOfDeveloper = 0;  
+        transfereth = false; 
     }
 
     function acceptSolution() public { // Make sure this is only owner
         accepted = true;
         escalate = false;
     }
+
+    function SubmitSolution( string memory Solipfsid) public returns (bool success) {
+        Solipfs = Solipfsid;
+        return true;
+    }
+
     function rejectSolution() public { // Make sure this is only owner
         accepted = false;
         escalate = true;
     }
+    function Bid(uint256 minimumBid) public returns (bool success) {
+         // Pending implementation
+        // Get taks and use task.Bid() 
+        minBid = minimumBid;
+        return true;
+    }
 
+    function acceptBid() public returns (bool success) {
+         // Pending implementation
+        // Get taks and use task.Bid() 
+        finalized = true;
+        return true;
+    }
+    function voteDev() public returns (bool success) {
+         // Pending implementation
+        // Get taks and use task.Bid() 
+        voteinFavorOfDeveloper += 1;
+        return true;
+    }
+    function voteHiring() public returns (bool success) {
+         // Pending implementation
+        // Get taks and use task.Bid() 
+        voteinFavorOfDeveloper -= 1;
+        return true;
+    }
+
+    function TransferMoney() public returns (bool success) {
+         // Pending implementation
+        // Get taks and use task.Bid() 
+        if (voteinFavorOfDeveloper >0){
+            accepted = true;
+            escalate = false;
+        }
+        if (voteinFavorOfDeveloper <0){
+            accepted = false;
+            escalate = false;
+        }
+        transfereth = true;
+
+        return true;
+    }
     // Case escalated= true and accepted=true won't occur.
 }
 
@@ -116,7 +167,6 @@ contract owned {
     constructor() public {
         owner = msg.sender;
     }
-
 
     // Add this modifier to restrict function execution
     // to only the current owner.
@@ -305,28 +355,31 @@ contract TokenERC20 {
         return true;
     }
 
-    function Bid(uint256 minimumBid, string memory ipfsid) public returns (bool success) {
-        Task task = new Task( minimumBid, msg.sender, ipfsid);
+    function Bid(uint256 minimumBid, string memory TaskID) public returns (bool success) {
+         // Pending implementation
+        // Get taks and use task.Bid() 
+        Task task = new Task( minimumBid, msg.sender, TaskID);
         tasks.push(task);
 
         return true;
     }
 
 
-    function acceptBid(uint256 minimumBid, string memory ipfsid) public returns (bool success) {
+    function acceptBid( string memory taskID) public returns (bool success) {
         // Pending implementation
-        Task task = new Task( minimumBid, msg.sender, ipfsid);
+        // Get taks and use task.acceptBid() 
+        Task task = new Task( 10, msg.sender, taskID);
         tasks.push(task);
 
         return true;
     }
 
 
-    function SubmitSolution( string memory ipfsid, address taskID) public returns (bool success) {
-        // Pending
+    function SubmitSolution( string memory Solipfsid, address taskID) public returns (bool success) {
+        // Pending implementation 
         address a = taskID;
         a = a;
-        Task task = new Task( 100, msg.sender, ipfsid);
+        Task task = new Task( 100, msg.sender, Solipfsid);
         tasks.push(task);
         return true;
     }
